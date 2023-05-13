@@ -1,25 +1,24 @@
-
-package aiss.gitminer.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+package aiss.GitHubMiner.model;
 
 import javax.annotation.Generated;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@Entity
-@Table(name = "GMUser")     // Watch out: User is a reserved keyword in H2
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "id",
+        "username",
+        "name",
+        "avatar_url",
+        "web_url"
+})
+@Generated("jsonschema2pojo")
 public class User {
 
-    @Id
     @JsonProperty("id")
-    private String id;
+    private Integer id;
     @JsonProperty("username")
-    @NotEmpty(message = "The username cannot be empty")
     private String username;
     @JsonProperty("name")
     private String name;
@@ -28,42 +27,52 @@ public class User {
     @JsonProperty("web_url")
     private String webUrl;
 
-    public String getId() {
+    @JsonProperty("id")
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    @JsonProperty("id")
+    public void setId(Integer id) {
         this.id = id;
     }
 
+    @JsonProperty("username")
     public String getUsername() {
         return username;
     }
 
+    @JsonProperty("username")
     public void setUsername(String username) {
         this.username = username;
     }
 
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    @JsonProperty("avatar_url")
     public String getAvatarUrl() {
         return avatarUrl;
     }
 
+    @JsonProperty("avatar_url")
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
 
+    @JsonProperty("web_url")
     public String getWebUrl() {
         return webUrl;
     }
 
+    @JsonProperty("web_url")
     public void setWebUrl(String webUrl) {
         this.webUrl = webUrl;
     }
