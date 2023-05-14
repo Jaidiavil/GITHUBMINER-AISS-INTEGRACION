@@ -1,4 +1,4 @@
-package aiss.GitHubMiner.model;
+package aiss.GitHubMiner.post;
 
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;

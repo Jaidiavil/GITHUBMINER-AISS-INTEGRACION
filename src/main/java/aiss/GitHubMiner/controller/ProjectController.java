@@ -1,7 +1,7 @@
 package aiss.GitHubMiner.controller;
 
 import aiss.GitHubMiner.Service.GitHubService;
-import aiss.GitHubMiner.model.Project;
+import aiss.GitHubMiner.post.Project;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

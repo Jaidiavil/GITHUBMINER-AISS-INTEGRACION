@@ -1,4 +1,4 @@
-package aiss.GitHubMiner.model;
+package aiss.GitHubMiner.post;
 
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,24 +8,18 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
-        "username",
         "name",
-        "avatar_url",
         "web_url"
 })
 @Generated("jsonschema2pojo")
-public class User {
+public class Project {
 
     @JsonProperty("id")
     private Integer id;
-    @JsonProperty("username")
-    private String username;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("avatar_url")
-    private String avatarUrl;
     @JsonProperty("web_url")
-    private String webUrl;
+    private String web_url;
 
     @JsonProperty("id")
     public Integer getId() {
@@ -35,16 +29,6 @@ public class User {
     @JsonProperty("id")
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @JsonProperty("username")
-    public String getUsername() {
-        return username;
-    }
-
-    @JsonProperty("username")
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @JsonProperty("name")
@@ -57,24 +41,14 @@ public class User {
         this.name = name;
     }
 
-    @JsonProperty("avatar_url")
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    @JsonProperty("avatar_url")
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    @JsonProperty("web_url")
+    public String getCreated_at() {
+        return web_url;
     }
 
     @JsonProperty("web_url")
-    public String getWebUrl() {
-        return webUrl;
-    }
-
-    @JsonProperty("web_url")
-    public void setWebUrl(String webUrl) {
-        this.webUrl = webUrl;
+    public void setWeb_url(String web_url) {
+        this.web_url = web_url;
     }
 
     @Override
@@ -85,21 +59,13 @@ public class User {
         sb.append('=');
         sb.append(((this.id == null)?"<null>":this.id));
         sb.append(',');
-        sb.append("username");
-        sb.append('=');
-        sb.append(((this.username == null)?"<null>":this.username));
-        sb.append(',');
         sb.append("name");
         sb.append('=');
         sb.append(((this.name == null)?"<null>":this.name));
         sb.append(',');
-        sb.append("avatarUrl");
+        sb.append("web_url");
         sb.append('=');
-        sb.append(((this.avatarUrl == null)?"<null>":this.avatarUrl));
-        sb.append(',');
-        sb.append("webUrl");
-        sb.append('=');
-        sb.append(((this.webUrl == null)?"<null>":this.webUrl));
+        sb.append(((this.web_url == null)?"<null>":this.web_url));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
