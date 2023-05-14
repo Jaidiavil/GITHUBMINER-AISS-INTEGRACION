@@ -24,20 +24,23 @@ public class ProjectController {
 
 
     //POST http://localhost:8082/githubminer/{owner}/{repoName}
+    @Autowired
+    GitHubService service;
+
+    @GetMapping("/{owner}/{repo}")
+    public Project getDataGitHub(@PathVariable String owner, @PathVariable String repo,
+                                 @RequestParam(value  = "sinceCommits", required = false, defaultValue = "5") Integer sinceCommits,
+                                 @RequestParam(value  = "sinceIssues", required = false, defaultValue = "20") Integer sinceIssues,
+                                 @RequestParam(value  = "maxPages", required = false, defaultValue = "2") Integer maxPages){
+        return service.findGitMinerProject(owner,repo,sinceCommits,sinceIssues,maxPages);
+    }
+    @PostMapping("/{owner}/{repo}")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{owner}/{repoName}")
-    public Project createProject(@PathVariable String owner, @PathVariable String repoName, @RequestParam(defaultValue = "5") Integer sinceCommits,
-                                 @RequestParam(defaultValue = "20") Integer sinceIssues, @RequestParam(defaultValue = "2") Integer maxPages) {
-        Project project = projectService.getProject(owner, repoName, sinceCommits, sinceIssues, maxPages);
-        HttpEntity<Project> request = new HttpEntity<>(project);
-        ResponseEntity<Project> response = template.exchange(gitMinerUri, HttpMethod.POST, request, Project.class);
-        return response.getBody();
+    public Project postDataGitHub(@PathVariable String owner, @PathVariable String repo,
+                                  @RequestParam(value  = "sinceCommits", required = false, defaultValue = "5") Integer sinceCommits,
+                                  @RequestParam(value  = "sinceIssues", required = false, defaultValue = "20") Integer sinceIssues,
+                                  @RequestParam(value  = "maxPages", required = false, defaultValue = "2") Integer maxPages){
+        return service.postGitHubMinerProject(owner,repo,sinceCommits,sinceIssues,maxPages);
     }
 
-    //GET http://localhost:8082/githubminer/{owner}/{repoName}
-    @GetMapping("/{owner}/{repoName}")
-    public Project findProject(@PathVariable String owner, @PathVariable String repoName, @RequestParam(defaultValue = "5") Integer sinceCommits,
-                               @RequestParam(defaultValue = "20") Integer sinceIssues, @RequestParam(defaultValue = "2") Integer maxPages) {
-        return projectService.getProject(owner, repoName, sinceCommits, sinceIssues, maxPages);
-    }
 }

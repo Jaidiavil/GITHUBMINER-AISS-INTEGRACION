@@ -50,6 +50,14 @@ public class Project {
         this.issues = new ArrayList<>(issues);
     }
 
+    public Project(Project project) {
+        this.id=project.getId();
+        this.commits =project.getCommits() ;
+        this.name =project.getName() ;
+        this.webUrl =project.getWebUrl() ;
+        this.issues =project.getIssues() ;
+    }
+
     public String getId() { return id; }
 
     public void setId(String id) { this.id = id; }
