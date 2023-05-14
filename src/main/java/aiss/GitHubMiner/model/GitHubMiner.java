@@ -1,6 +1,6 @@
------------------------------------aiss.Githubminer.GitHubMiner.java-----------------------------------
 
-        package aiss.Githubminer;
+
+package aiss.GitHubMiner.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
