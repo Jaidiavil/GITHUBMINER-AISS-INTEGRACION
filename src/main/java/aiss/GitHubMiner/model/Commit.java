@@ -1,55 +1,52 @@
-package aiss.gitminer.model;
+package aiss.GitHubMiner.model;
 
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "Commit")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "id",
+        "title",
+        "message",
+        "author_name",
+        "author_email",
+        "authored_date",
+        "committer_name",
+        "committer_email",
+        "committed_date",
+        "web_url"
+})
+@Generated("jsonschema2pojo")
 public class Commit {
 
-    @Id
     @JsonProperty("id")
-    private String id;
+    private Integer id;
     @JsonProperty("title")
     private String title;
-
     @JsonProperty("message")
-    @Column(columnDefinition="TEXT")
     private String message;
     @JsonProperty("author_name")
-    @NotEmpty(message = "Author name cannot be empty.")
-    private String authorName;
+    private String author_name;
     @JsonProperty("author_email")
-    private String authorEmail;
+    private String author_email;
     @JsonProperty("authored_date")
-    @NotEmpty(message = "Author date cannot be empty.")
-    private String authoredDate;
+    private String authored_date;
     @JsonProperty("committer_name")
-    @NotEmpty(message = "Committer name cannot be empty.")
-    private String committerName;
+    private String committer_name;
     @JsonProperty("committer_email")
-    private String committerEmail;
-
+    private String committer_email;
     @JsonProperty("committed_date")
-    @NotEmpty(message = "Committer date cannot be empty.")
-    private String committedDate;
+    private String committed_date;
+    @JsonProperty("committer_email")
+    private String web_url;
 
-    @JsonProperty("web_url")
-    @NotEmpty(message = "URL cannot be empty." +
-            "")
-    private String webUrl;
-
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -69,111 +66,112 @@ public class Commit {
         this.message = message;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthor_name() {
+        return author_name;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setAuthor_name(String author_name) {
+        this.author_name = author_name;
     }
 
-    public String getAuthorEmail() {
-        return authorEmail;
+    public String getAuthor_email() {
+        return author_email;
     }
 
-    public void setAuthorEmail(String authorEmail) {
-        this.authorEmail = authorEmail;
+    public void setAuthor_email(String author_email) {
+        this.author_email = author_email;
     }
 
-    public String getAuthoredDate() {
-        return authoredDate;
+    public String getAuthored_date() {
+        return authored_date;
     }
 
-    public void setAuthoredDate(String authoredDate) {
-        this.authoredDate = authoredDate;
+    public void setAuthored_date(String authored_date) {
+        this.authored_date = authored_date;
     }
 
-    public String getCommitterName() {
-        return committerName;
+    public String getCommitter_name() {
+        return committer_name;
     }
 
-    public void setCommitterName(String committerName) {
-        this.committerName = committerName;
+    public void setCommitter_name(String committer_name) {
+        this.committer_name = committer_name;
     }
 
-    public String getCommitterEmail() {
-        return committerEmail;
+    public String getCommitter_email() {
+        return committer_email;
     }
 
-    public void setCommitterEmail(String committerEmail) {
-        this.committerEmail = committerEmail;
+    public void setCommitter_email(String committer_email) {
+        this.committer_email = committer_email;
     }
 
-    public String getCommittedDate() {
-        return committedDate;
+    public String getCommitted_date() {
+        return committed_date;
     }
 
-    public void setCommittedDate(String committedDate) {
-        this.committedDate = committedDate;
+    public void setCommitted_date(String committed_date) {
+        this.committed_date = committed_date;
     }
 
-    public String getWebUrl() {
-        return webUrl;
+    public String getWeb_url() {
+        return web_url;
     }
 
-    public void setWebUrl(String webUrl) {
-        this.webUrl = webUrl;
+    public void setWeb_url(String web_url) {
+        this.web_url = web_url;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Commit.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(User.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
         sb.append('=');
-        sb.append(((this.id == null) ? "<null>" : this.id));
+        sb.append(((this.id == null)?"<null>":this.id));
         sb.append(',');
         sb.append("title");
         sb.append('=');
-        sb.append(((this.title == null) ? "<null>" : this.title));
+        sb.append(((this.title == null)?"<null>":this.title));
         sb.append(',');
         sb.append("message");
         sb.append('=');
-        sb.append(((this.message == null) ? "<null>" : this.message));
+        sb.append(((this.message == null)?"<null>":this.message));
         sb.append(',');
-        sb.append("authorName");
+        sb.append("author_name");
         sb.append('=');
-        sb.append(((this.authorName == null) ? "<null>" : this.authorName));
+        sb.append(((this.author_name == null)?"<null>":this.author_name));
         sb.append(',');
-        sb.append("authorEmail");
+        sb.append("author_email");
         sb.append('=');
-        sb.append(((this.authorEmail == null) ? "<null>" : this.authorEmail));
+        sb.append(((this.author_email == null)?"<null>":this.author_email));
         sb.append(',');
-        sb.append("authoredDate");
+        sb.append("authored_date");
         sb.append('=');
-        sb.append(((this.authoredDate == null) ? "<null>" : this.authoredDate));
+        sb.append(((this.authored_date == null)?"<null>":this.authored_date));
         sb.append(',');
-        sb.append("committerName");
+        sb.append("committer_name");
         sb.append('=');
-        sb.append(((this.committerName == null) ? "<null>" : this.committerName));
+        sb.append(((this.committer_name == null)?"<null>":this.committer_name));
         sb.append(',');
-        sb.append("committerEmail");
+        sb.append("committer_email");
         sb.append('=');
-        sb.append(((this.committerEmail == null) ? "<null>" : this.committerEmail));
+        sb.append(((this.committer_email == null)?"<null>":this.committer_email));
         sb.append(',');
-        sb.append("committedDate");
+        sb.append("committed_date");
         sb.append('=');
-        sb.append(((this.committedDate == null) ? "<null>" : this.committedDate));
+        sb.append(((this.committed_date == null)?"<null>":this.committed_date));
         sb.append(',');
-        sb.append("webUrl");
+        sb.append("web_url");
         sb.append('=');
-        sb.append(((this.webUrl == null) ? "<null>" : this.webUrl));
+        sb.append(((this.web_url == null)?"<null>":this.web_url));
         sb.append(',');
-        if (sb.charAt((sb.length() - 1)) == ',') {
-            sb.setCharAt((sb.length() - 1), ']');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
         } else {
             sb.append(']');
         }
         return sb.toString();
     }
+
 }
