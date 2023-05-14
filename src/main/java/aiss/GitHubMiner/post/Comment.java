@@ -10,27 +10,38 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "id",
         "body",
         "created_at",
-        "updated_at"
+        "updated_at",
+        "author"
 })
 @Generated("jsonschema2pojo")
 public class Comment {
 
     @JsonProperty("id")
-    private Integer id;
+    private String id;
     @JsonProperty("body")
     private String body;
     @JsonProperty("created_at")
     private String created_at;
     @JsonProperty("updated_at")
     private String updated_at;
+    @JsonProperty("author")
+    private User author;
+
+    public Comment(String id, String body, String created_at, String updated_at, User author) {
+        this.id = id;
+        this.body = body;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.author = author;
+    }
 
     @JsonProperty("id")
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -64,6 +75,12 @@ public class Comment {
         this.updated_at = updated_at;
     }
 
+    @JsonProperty("author")
+    public User getAuthor() { return author; }
+
+    @JsonProperty("author")
+    public void setAuthor(User author) { this.author = author; }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -83,6 +100,10 @@ public class Comment {
         sb.append("updated_at");
         sb.append('=');
         sb.append(((this.updated_at == null)?"<null>":this.updated_at));
+        sb.append(',');
+        sb.append("author");
+        sb.append('=');
+        sb.append(((this.author == null)?"<null>":this.author));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');

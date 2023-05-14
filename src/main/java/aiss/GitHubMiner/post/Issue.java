@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,10 +26,10 @@ import java.util.List;
 public class Issue {
 
     @JsonProperty("id")
-    private Integer id;
+    private String id;
 
     @JsonProperty("ref_id")
-    private String ref_id;
+    private String refId;
 
     @JsonProperty("title")
     private String title;
@@ -40,16 +41,25 @@ public class Issue {
     private String state;
 
     @JsonProperty("created_at")
-    private String created_at;
+    private String createdAt;
 
     @JsonProperty("updated_at")
-    private String updated_at;
+    private String updatedAt;
 
     @JsonProperty("closed_at")
-    private String closed_at;
+    private String closedAt;
 
     @JsonProperty("labels")
     private List<String> labels;
+
+    @JsonProperty("author")
+    private User author;
+
+    @JsonProperty("assignee")
+    private User assignee;
+
+    @JsonProperty("web_url")
+    private String webUrl;
 
     @JsonProperty("upvotes")
     private Integer upvotes;
@@ -57,93 +67,86 @@ public class Issue {
     @JsonProperty("downvotes")
     private Integer downvotes;
 
-    public Integer getId() {
-        return id;
-    }
+    @JsonProperty("comments")
+    private List<Comment> comments;
 
-    public void setId(Integer id) {
+    public Issue(String id, String refId, String title, String description, String state, String createdAt, String updatedAt, String closedAt, List<String> labels, User author, User assignee, Integer upvotes, Integer downvotes, String webUrl) {
         this.id = id;
-    }
-
-    public String getRefId() {
-        return ref_id;
-    }
-
-    public void setRefId(String ref_id) {
-        this.ref_id = ref_id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
+        this.refId = refId;
         this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
         this.state = state;
-    }
-
-    public String getCreatedAt() {
-        return created_at;
-    }
-
-    public void setCreatedAt(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public String getUpdatedAt() {
-        return updated_at;
-    }
-
-    public void setUpdatedAt(String updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public String getClosedAt() {
-        return closed_at;
-    }
-
-    public void setClosedAt(String closed_at) {
-        this.closed_at = closed_at;
-    }
-
-    public List<String> getLabels() {
-        return labels;
-    }
-
-    public void setLabels(List<String> labels) {
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.closedAt = closedAt;
         this.labels = labels;
-    }
-
-    public Integer getUpvotes() {
-        return upvotes;
-    }
-
-    public void setUpvotes(Integer upvotes) {
+        this.author = author;
+        this.assignee = assignee;
         this.upvotes = upvotes;
-    }
-
-    public Integer getDownvotes() {
-        return downvotes;
-    }
-
-    public void setDownvotes(Integer downvotes) {
         this.downvotes = downvotes;
+        this.webUrl = webUrl;
+        this.comments = new ArrayList<>();
     }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
+
+    public String getRefId() { return refId; }
+
+    public void setRefId(String refId) { this.refId = refId; }
+
+    public String getTitle() { return title; }
+
+    public void setTitle(String title) { this.title = title; }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
+
+    public String getState() { return state; }
+
+    public void setState(String state) { this.state = state; }
+
+    public String getCreatedAt() { return createdAt; }
+
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+
+    public String getUpdatedAt() { return updatedAt; }
+
+    public void setUpdatedAt(String updatedAt) { this.updatedAt = updatedAt; }
+
+    public String getClosedAt() { return closedAt; }
+
+    public void setClosedAt(String closedAt) { this.closedAt = closedAt; }
+
+    public List<String> getLabels() { return labels; }
+
+    public void setLabels(List<String> labels) { this.labels = labels; }
+
+    public User getAuthor() { return author; }
+
+    public void setAuthor(User author) { this.author = author; }
+
+    public User getAssignee() { return assignee; }
+
+    public void setAssignee(User assignee) { this.assignee = assignee; }
+
+    public Integer getUpvotes() { return upvotes; }
+
+    public void setUpvotes(Integer upvotes) { this.upvotes = upvotes; }
+
+    public Integer getDownvotes() { return downvotes; }
+
+    public void setDownvotes(Integer downvotes) { this.downvotes = downvotes; }
+
+    public String getWebUrl() { return webUrl; }
+
+    public void setWebUrl(String webUrl) { this.webUrl = webUrl; }
+
+    public List<Comment> getComments() { return comments; }
+
+    public void setComments(List<Comment> comments) { this.comments = comments; }
 
 
     @Override
@@ -156,7 +159,7 @@ public class Issue {
         sb.append(',');
         sb.append("ref_id");
         sb.append('=');
-        sb.append(((this.ref_id == null)?"<null>":this.ref_id));
+        sb.append(((this.refId == null)?"<null>":this.refId));
         sb.append(',');
         sb.append("title");
         sb.append('=');
@@ -172,15 +175,15 @@ public class Issue {
         sb.append(',');
         sb.append("created_at");
         sb.append('=');
-        sb.append(((this.created_at == null)?"<null>":this.created_at));
+        sb.append(((this.createdAt == null)?"<null>":this.createdAt));
         sb.append(',');
         sb.append("updated_at");
         sb.append('=');
-        sb.append(((this.updated_at == null)?"<null>":this.updated_at));
+        sb.append(((this.updatedAt == null)?"<null>":this.updatedAt));
         sb.append(',');
         sb.append("closed_at");
         sb.append('=');
-        sb.append(((this.closed_at == null)?"<null>":this.closed_at));
+        sb.append(((this.closedAt == null)?"<null>":this.closedAt));
         sb.append(',');
         sb.append("labels");
         sb.append('=');

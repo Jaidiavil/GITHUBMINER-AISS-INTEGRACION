@@ -1,72 +1,108 @@
 package aiss.GitHubMiner.post;
 
-import javax.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "id",
-        "name",
-        "web_url"
-})
-@Generated("jsonschema2pojo")
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Project {
 
     @JsonProperty("id")
-    private Integer id;
+    public String id;
+
     @JsonProperty("name")
-    private String name;
+    @NotEmpty(message = "The name of the project cannot be empty")
+    public String name;
+
     @JsonProperty("web_url")
-    private String web_url;
+    @NotEmpty(message = "The URL of the project cannot be empty")
+    public String webUrl;
+    @JsonProperty("commits")
+    private List<Commit> commits;
 
-    @JsonProperty("id")
-    public Integer getId() {
-        return id;
+    @JsonProperty("issues")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "projectId")
+    private List<Issue> issues;
+
+    public Project() {
+        commits = new ArrayList<>();
+        issues = new ArrayList<>();
     }
 
-    @JsonProperty("id")
-    public void setId(Integer id) {
+    public Project(String id, String name, String web_url) {
         this.id = id;
+        this.name = name;
+        this.webUrl = web_url;
+        this.commits = new ArrayList<>();
+        this.issues = new ArrayList<>();
     }
 
-    @JsonProperty("name")
+    public Project(String id, String name, String web_url, List<Commit> commits, List<Issue> issues) {
+        this.id = id;
+        this.name = name;
+        this.webUrl = web_url;
+        this.commits = new ArrayList<>(commits);
+        this.issues = new ArrayList<>(issues);
+    }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
+
     public String getName() {
         return name;
     }
 
-    @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
-    @JsonProperty("web_url")
-    public String getCreated_at() {
-        return web_url;
+    public String getWebUrl() {
+        return webUrl;
     }
 
-    @JsonProperty("web_url")
-    public void setWeb_url(String web_url) {
-        this.web_url = web_url;
+    public void setWebUrl(String webUrl) {
+        this.webUrl = webUrl;
+    }
+
+    public List<Commit> getCommits() {
+        return commits;
+    }
+
+    public void setCommits(List<Commit> commits) {
+        this.commits = commits;
+    }
+
+    public List<Issue> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(List<Issue> issues) {
+        this.issues = issues;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(User.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Project.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
         sb.append('=');
         sb.append(((this.id == null)?"<null>":this.id));
         sb.append(',');
-        sb.append("name");
+        sb.append("commits");
         sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
+        sb.append(((this.commits == null)?"<null>":this.commits));
         sb.append(',');
-        sb.append("web_url");
+        sb.append("issues");
         sb.append('=');
-        sb.append(((this.web_url == null)?"<null>":this.web_url));
+        sb.append(((this.issues == null)?"<null>":this.issues));
         sb.append(',');
+
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -74,5 +110,4 @@ public class Project {
         }
         return sb.toString();
     }
-
 }

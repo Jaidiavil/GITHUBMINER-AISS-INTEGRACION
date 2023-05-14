@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Commit {
 
     @JsonProperty("id")
-    private Integer id;
+    private String id;
     @JsonProperty("title")
     private String title;
     @JsonProperty("message")
@@ -42,11 +42,24 @@ public class Commit {
     @JsonProperty("committer_email")
     private String web_url;
 
-    public Integer getId() {
+    public Commit(String id, String title, String message, String author_name, String author_email, String authored_date, String committer_name, String committer_email, String committed_date, String web_url) {
+        this.id = id;
+        this.title = title;
+        this.message = message;
+        this.author_name = author_name;
+        this.author_email = author_email;
+        this.authored_date = authored_date;
+        this.committer_name = committer_name;
+        this.committer_email = committer_email;
+        this.committed_date = committed_date;
+        this.web_url = web_url;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
