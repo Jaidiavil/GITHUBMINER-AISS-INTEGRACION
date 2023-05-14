@@ -15,10 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/githubminer")
 public class ProjectController {
-    @Autowired
-    RestTemplate template;
-    @Autowired
-    ProjectService projectService;
 
     final String gitMinerUri= "http://localhost:8080/gitminer/v1/projects";
 
