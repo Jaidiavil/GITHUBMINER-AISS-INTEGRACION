@@ -1,4 +1,5 @@
-package aiss.GitHubMiner.post;
+
+package aiss.GitHubMiner.model;
 
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "id",
-        "body",
-        "created_at",
-        "updated_at",
-        "author"
+    "id",
+    "body",
+    "author",
+    "created_at",
+    "updated_at"
 })
 @Generated("jsonschema2pojo")
 public class Comment {
@@ -20,20 +21,12 @@ public class Comment {
     private String id;
     @JsonProperty("body")
     private String body;
-    @JsonProperty("created_at")
-    private String created_at;
-    @JsonProperty("updated_at")
-    private String updated_at;
     @JsonProperty("author")
-    private User author;
-
-    public Comment(String id, String body, String created_at, String updated_at, User author) {
-        this.id = id;
-        this.body = body;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-        this.author = author;
-    }
+    private Author__1 author;
+    @JsonProperty("created_at")
+    private String createdAt;
+    @JsonProperty("updated_at")
+    private String updatedAt;
 
     @JsonProperty("id")
     public String getId() {
@@ -55,36 +48,40 @@ public class Comment {
         this.body = body;
     }
 
-    @JsonProperty("created_at")
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    @JsonProperty("created_at")
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    @JsonProperty("updated_at")
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
-    @JsonProperty("updated_at")
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    @JsonProperty("author")
+    public Author__1 getAuthor() {
+        return author;
     }
 
     @JsonProperty("author")
-    public User getAuthor() { return author; }
+    public void setAuthor(Author__1 author) {
+        this.author = author;
+    }
 
-    @JsonProperty("author")
-    public void setAuthor(User author) { this.author = author; }
+    @JsonProperty("created_at")
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    @JsonProperty("created_at")
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @JsonProperty("updated_at")
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @JsonProperty("updated_at")
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(User.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Comment.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
         sb.append('=');
         sb.append(((this.id == null)?"<null>":this.id));
@@ -93,17 +90,17 @@ public class Comment {
         sb.append('=');
         sb.append(((this.body == null)?"<null>":this.body));
         sb.append(',');
-        sb.append("created_at");
-        sb.append('=');
-        sb.append(((this.created_at == null)?"<null>":this.created_at));
-        sb.append(',');
-        sb.append("updated_at");
-        sb.append('=');
-        sb.append(((this.updated_at == null)?"<null>":this.updated_at));
-        sb.append(',');
         sb.append("author");
         sb.append('=');
         sb.append(((this.author == null)?"<null>":this.author));
+        sb.append(',');
+        sb.append("createdAt");
+        sb.append('=');
+        sb.append(((this.createdAt == null)?"<null>":this.createdAt));
+        sb.append(',');
+        sb.append("updatedAt");
+        sb.append('=');
+        sb.append(((this.updatedAt == null)?"<null>":this.updatedAt));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');

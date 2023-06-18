@@ -1,10 +1,7 @@
 package aiss.GitHubMiner.service;
 
-import aiss.GitHubMiner.model.IssueGitHub;
-import aiss.GitHubMiner.model.ProjectGitHub;
-import aiss.GitHubMiner.post.Commit;
-import aiss.GitHubMiner.post.Issue;
-import aiss.GitHubMiner.post.Project;
+import aiss.GitHubMiner.model.ProjectGitMiner;
+import aiss.GitHubMiner.model2.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import aiss.GitHubMiner.model.CommitGitHub;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,18 +22,91 @@ public class GitHubService {
 
     private static Logger logger = LoggerFactory.getLogger(GitHubService.class);
     String baseUri = "https://api.github.com/repos/";
-
-    public Project findProject() {
+    private HttpHeaders getHeader(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization","Bearer " + token);
+        return headers;
+    }
+    public Project findProject () {
         HttpHeaders h = new HttpHeaders();
         h.setContentType(MediaType.APPLICATION_JSON);
         String uri = baseUri + "/";
         HttpEntity<Object> r = new HttpEntity<>(h);
         ResponseEntity<Project> res = restTemplate.exchange(uri, HttpMethod.GET, r, Project.class);
+
         return res.getBody();
     }
-    public List<CommitGitHub> findAllCommitsProject(String owner, String repository) {
-        CommitGitHub[] commits = restTemplate.
-                getForObject(baseUri + owner + "/" + repository + "/commits", CommitGitHub[].class);
+    public User findUser(String owner){
+        String uri = "https://api.github.com/users/" + owner;
+        HttpHeaders headers = getHeader();
+
+        HttpEntity<Commit[]> entity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<User> userSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, User.class);
+        //User userSearch = restTemplate.getForObject(uri, User.class);
+        return userSearch.getBody();
+
+    }
+    public Project findAProjectByOwnerAndRepo(String owner, String repo){
+        Project project = null;
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization","Bearer " + token);
+        HttpEntity<Project> entity = new HttpEntity<Project>(null, headers);
+
+        ResponseEntity<Project> projectSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, Project.class);
+        project = projectSearch.getBody();
+        project.setCommit(findCommitsByOwnerAndRepo(owner,repo));
+        project.setIssues(findIssuesByOwnerAndRepo(owner,repo));
+
+        return project;
+    }
+    public List<Commit> findCommitsByOwnerAndRepo(String owner, String repo){
+        List<Commit> commits = null;
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/commits";
+        HttpHeaders headers = getHeader();
+
+        HttpEntity<Commit[]> entity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<Commit[]> commitSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, Commit[].class);
+        commits = Arrays.asList(commitSearch.getBody());
+        //Commit[] commitSearch = restTemplate.getForObject(uri, Commit[].class);
+
+        return commits;
+    }
+    public List<Issue> findIssuesByOwnerAndRepo(String owner, String repo){
+        List<Issue> issues = null;
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/issues";
+
+        HttpHeaders headers = getHeader();
+
+        HttpEntity<Issue[]> entity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<Issue[]> issuesSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, Issue[].class);
+
+        Issue[] allIssues = issuesSearch.getBody();
+
+        //Issue[] issuesSearch = restTemplate.getForObject(uri, Issue[].class);
+        for(Issue e: allIssues){
+            e.setUser(findUser(e.getUser().getUsername()));
+            e.setComment(findCommentByIid(owner, repo,e.getIid()));
+        }
+
+        return Arrays.asList(allIssues);
+    }
+    public List<Comment> findCommentByIid(String owner, String repo, Integer iid){
+        List<Comment> issues = null;
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/issues/" + iid.toString() + "/comments";
+        HttpHeaders headers = getHeader();
+        HttpEntity<Comment> entity = new HttpEntity<Comment>(null, headers);
+        ResponseEntity<Comment[]> commentSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, Comment[].class);
+        Comment[] comments = commentSearch.getBody();
+        return Arrays.asList(comments);
+    }
+    public List<Commit> findAllCommitsProject(String owner, String repository) {
+        Commit[] commits = restTemplate.
+                getForObject(baseUri + owner + "/" + repository + "/commits", Commit[].class);
         return Arrays.
                 stream(commits).
                 toList();
@@ -49,23 +118,23 @@ public class GitHubService {
         return project1;
     }
 
-    public ResponseEntity<CommitGitHub[]> getCommits(String uri) {
+    public ResponseEntity<Commit[]> getCommits(String uri) {
         HttpHeaders head = new HttpHeaders();
         if (token != "") {
             head.set("Authorization", "Bearer" + token);
         }
-        HttpEntity<CommitGitHub[]> request = new HttpEntity<>(null, head);
-        ResponseEntity<CommitGitHub[]> res = restTemplate.exchange(uri, HttpMethod.GET, request, CommitGitHub[].class);
+        HttpEntity<Commit[]> request = new HttpEntity<>(null, head);
+        ResponseEntity<Commit[]> res = restTemplate.exchange(uri, HttpMethod.GET, request, Commit[].class);
         return res;
     }
 
-    public ResponseEntity<IssueGitHub[]> getIssues(String uri) {
+    public ResponseEntity<Issue[]> getIssues(String uri) {
         HttpHeaders head = new HttpHeaders();
         if (token != "") {
             head.set("Authorization", "Bearer" + token);
         }
-        HttpEntity<IssueGitHub[]> request = new HttpEntity<>(null, head);
-        ResponseEntity<IssueGitHub[]> res = restTemplate.exchange(uri, HttpMethod.GET, request, IssueGitHub[].class);
+        HttpEntity<Issue[]> request = new HttpEntity<>(null, head);
+        ResponseEntity<Issue[]> res = restTemplate.exchange(uri, HttpMethod.GET, request, Issue[].class);
         return res;
     }
 
@@ -91,5 +160,12 @@ public class GitHubService {
         Project project = response.getBody();
 
         return project;
+    }
+    public ProjectGitMiner createProject(Project project){
+        String uri = "http://localhost:8080/gitminer/projects";
+
+        ProjectGitMiner res = restTemplate.postForObject(uri, project, ProjectGitMiner.class);
+
+        return res;
     }
 }
