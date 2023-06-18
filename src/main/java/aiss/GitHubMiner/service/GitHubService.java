@@ -93,8 +93,7 @@ public class GitHubService {
     }
     public Project getProjectById(String id, String repo, int sinceCommits , int sinceIssues,int maxPages){
 
-        String token = "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";
-        String url = "http://localhost:8082/gitminer/projects" + id;
+        String url = "http://localhost:8080/gitminer/projects" + id;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
@@ -108,7 +107,6 @@ public class GitHubService {
     }
     public ProjectGitMiner createProject(Project project){
         String uri = "http://localhost:8080/gitminer/projects";
-
         ProjectGitMiner res = restTemplate.postForObject(uri, project, ProjectGitMiner.class);
 
         return res;

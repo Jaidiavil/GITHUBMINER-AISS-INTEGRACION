@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/githubminer")
 public class ProjectController {
-
-    final String gitMinerUri= "http://localhost:8080/gitminer/v1/projects";
-
     //POST http://localhost:8082/githubminer/{owner}/{repoName}
     @Autowired
     GitHubService service;
