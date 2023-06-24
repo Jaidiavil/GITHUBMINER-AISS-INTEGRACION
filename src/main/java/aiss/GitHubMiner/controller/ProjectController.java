@@ -19,7 +19,7 @@ public ProjectGitMiner createProject(@PathVariable String owner, @PathVariable S
                                      @RequestParam(defaultValue = "2") Integer sinceCommits,
                                      @RequestParam(defaultValue = "20") Integer sinceIssues,
                                      @RequestParam(defaultValue = "2") Integer maxPages){
-    Project project = service.findProjectByOwnerAndRepo(owner,repo,sinceIssues,maxPages);
+    Project project = service.findProjectByOwnerAndRepo(owner,repo,sinceCommits,sinceIssues,maxPages);
     ProjectGitMiner res = service.createProject(project);
 
     return res;
@@ -32,7 +32,7 @@ public ProjectGitMiner createProject(@PathVariable String owner, @PathVariable S
                            @RequestParam(defaultValue = "20") Integer sinceIssues,
                            @RequestParam(defaultValue = "2") Integer maxPages){
 
-        return service.findProjectByOwnerAndRepo(owner,repo,sinceIssues,maxPages);
+        return service.findProjectByOwnerAndRepo(owner,repo,sinceCommits,sinceIssues,maxPages);
 
     }
 

@@ -38,7 +38,7 @@ public class GitHubService {
     }
     public List<Commit> findCommitsByOwnerAndRepo(String owner, String repo,Integer sinceCommits,Integer maxPages){
         List<Commit> commits = null;
-        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/commits"+ "/commits?since=" + LocalDate.now().minusDays(sinceCommits) +"&per_page=" + maxPages;
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/commits?since=" + LocalDate.now().minusDays(sinceCommits) +"&per_page=" + maxPages;
         HttpHeaders headers = getHeader();
 
         HttpEntity<Commit[]> entity = new HttpEntity<>(null, headers);
@@ -65,18 +65,16 @@ public class GitHubService {
 
         return Arrays.asList(allIssues);
     }
-    public List<Comment> findCommentById(String owner,String repo,Integer id, Integer maxPages){
+    public List<Comment> findCommentById(String owner, String repo,Integer iid,Integer maxPages){
         List<Comment> issues = null;
-        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/issues/" + id.toString() + "/comments?per_page=" + maxPages;
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/issues/" + iid.toString() + "/comments?per_page=" + maxPages;
         HttpHeaders headers = getHeader();
         HttpEntity<Comment> entity = new HttpEntity<Comment>(null, headers);
-
         ResponseEntity<Comment[]> commentSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, Comment[].class);
         Comment[] comments = commentSearch.getBody();
-
         return Arrays.asList(comments);
     }
-    public Project findProjectByOwnerAndRepo(String owner, String repo,Integer sinceCommits,Integer maxPages){
+    public Project findProjectByOwnerAndRepo(String owner, String repo,Integer sinceCommits,Integer sinceIssues,Integer maxPages){
         Project project = null;
         String uri = "https://api.github.com/repos/" + owner + "/"+ repo+ "?per_page=" + maxPages;
 
@@ -88,7 +86,7 @@ public class GitHubService {
 
         project = projectSearch.getBody();
         project.setCommit(findCommitsByOwnerAndRepo(owner,repo,sinceCommits,maxPages));
-        project.setIssues(findIssuesByOwnerAndRepo(owner,repo,sinceCommits,maxPages));
+        project.setIssues(findIssuesByOwnerAndRepo(owner,repo,sinceIssues,maxPages));
 
         return project;
     }
@@ -107,7 +105,7 @@ public class GitHubService {
         return project;
     }
     public ProjectGitMiner createProject(Project project){
-        String uri = "http://localhost:8080/gitminer/projects";
+        String uri = "http://localhost:8080/gitminer";
         ProjectGitMiner res = restTemplate.postForObject(uri, project, ProjectGitMiner.class);
 
         return res;
