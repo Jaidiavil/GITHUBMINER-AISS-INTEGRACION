@@ -8,6 +8,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class GitHubService {
     }
 
     public User findUser(String owner){
-        String uri = "https://api.github.com/users/"+owner;
+        String uri = "https://api.github.com/users/" + owner;
         HttpHeaders headers = getHeader();
 
         HttpEntity<Commit[]> entity = new HttpEntity<>(null, headers);
@@ -35,9 +36,9 @@ public class GitHubService {
         return userSearch.getBody();
 
     }
-    public List<Commit> findCommitsByOwnerAndRepo(String owner, String repo){
+    public List<Commit> findCommitsByOwnerAndRepo(String owner, String repo,Integer sinceCommits,Integer maxPages){
         List<Commit> commits = null;
-        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/commits";
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/commits"+ "/commits?since=" + LocalDate.now().minusDays(sinceCommits) +"&per_page=" + maxPages;
         HttpHeaders headers = getHeader();
 
         HttpEntity<Commit[]> entity = new HttpEntity<>(null, headers);
@@ -46,9 +47,9 @@ public class GitHubService {
         commits = Arrays.asList(commitSearch.getBody());
         return commits;
     }
-    public List<Issue> findIssuesByOwnerAndRepo(String owner, String repo){
+    public List<Issue> findIssuesByOwnerAndRepo(String owner, String repo,Integer sinceIssues,Integer maxPages){
         List<Issue> issues = null;
-        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/issues";
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/issues?since=" + LocalDate.now().minusDays(sinceIssues)+"&per_page=" + maxPages;;
 
         HttpHeaders headers = getHeader();
 
@@ -59,14 +60,14 @@ public class GitHubService {
         Issue[] allIssues = issuesSearch.getBody();
         for(Issue e: allIssues){
             e.setUser(findUser(e.getUser().getUsername()));
-            e.setComment(findCommentById(owner, repo,e.getIid()));
+            e.setComment(findCommentById(owner, repo,e.getIid(),maxPages));
         }
 
         return Arrays.asList(allIssues);
     }
-    public List<Comment> findCommentById(String owner,String repo,Integer id){
+    public List<Comment> findCommentById(String owner,String repo,Integer id, Integer maxPages){
         List<Comment> issues = null;
-        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/issues/" + id.toString() + "/comments";
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo + "/issues/" + id.toString() + "/comments?per_page=" + maxPages;
         HttpHeaders headers = getHeader();
         HttpEntity<Comment> entity = new HttpEntity<Comment>(null, headers);
 
@@ -75,9 +76,9 @@ public class GitHubService {
 
         return Arrays.asList(comments);
     }
-    public Project findProjectByOwnerAndRepo(String owner, String repo){
+    public Project findProjectByOwnerAndRepo(String owner, String repo,Integer sinceCommits,Integer maxPages){
         Project project = null;
-        String uri = "https://api.github.com/repos/" + owner + "/"+ repo;
+        String uri = "https://api.github.com/repos/" + owner + "/"+ repo+ "?per_page=" + maxPages;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization","Bearer " + token);
@@ -86,14 +87,14 @@ public class GitHubService {
         ResponseEntity<Project> projectSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, Project.class);
 
         project = projectSearch.getBody();
-        project.setCommit(findCommitsByOwnerAndRepo(owner,repo));
-        project.setIssues(findIssuesByOwnerAndRepo(owner,repo));
+        project.setCommit(findCommitsByOwnerAndRepo(owner,repo,sinceCommits,maxPages));
+        project.setIssues(findIssuesByOwnerAndRepo(owner,repo,sinceCommits,maxPages));
 
         return project;
     }
-    public Project getProjectById(String id, String repo, int sinceCommits , int sinceIssues,int maxPages){
+    public Project getProjectById(String id, String repo, Integer sinceCommits , Integer sinceIssues,Integer maxPages){
 
-        String url = "http://localhost:8080/gitminer/projects" + id;
+        String url = "http://localhost:8080/gitminer/projects" + id + "?per_page=" + maxPages;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
