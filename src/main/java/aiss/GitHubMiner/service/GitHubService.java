@@ -1,5 +1,6 @@
 package aiss.GitHubMiner.service;
 
+import aiss.GitHubMiner.Except.ProjectNotFound;
 import aiss.GitHubMiner.model.ProjectGitMiner;
 import aiss.GitHubMiner.model2.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GitHubService {
@@ -74,7 +76,7 @@ public class GitHubService {
         Comment[] comments = commentSearch.getBody();
         return Arrays.asList(comments);
     }
-    public Project findProjectByOwnerAndRepo(String owner, String repo,Integer sinceCommits,Integer sinceIssues,Integer maxPages){
+    public Optional<Project> findProjectByOwnerAndRepo(String owner, String repo,Integer sinceCommits,Integer sinceIssues,Integer maxPages) throws ProjectNotFound{
         Project project = null;
         String uri = "https://api.github.com/repos/" + owner + "/"+ repo+ "?per_page=" + maxPages;
 
@@ -84,11 +86,15 @@ public class GitHubService {
 
         ResponseEntity<Project> projectSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, Project.class);
 
+        if (projectSearch.getStatusCode().equals(HttpStatus.NOT_FOUND) ){
+            return Optional.empty();
+        }
+
         project = projectSearch.getBody();
         project.setCommit(findCommitsByOwnerAndRepo(owner,repo,sinceCommits,maxPages));
         project.setIssues(findIssuesByOwnerAndRepo(owner,repo,sinceIssues,maxPages));
 
-        return project;
+        return Optional.of(project);
     }
     public Project getProjectById(String id, String repo, Integer sinceCommits , Integer sinceIssues,Integer maxPages){
 

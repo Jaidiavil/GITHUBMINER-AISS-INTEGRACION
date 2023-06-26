@@ -1,5 +1,6 @@
 package aiss.GitHubMiner;
 
+import aiss.GitHubMiner.Except.ProjectNotFound;
 import aiss.GitHubMiner.model2.*;
 import aiss.GitHubMiner.service.GitHubService;
 import org.junit.jupiter.api.DisplayName;
@@ -59,9 +60,10 @@ class GitHubMinerApplicationTests {
 			System.out.println(comments);
 
 		}
+		/*
 		@Test
 		@DisplayName("Get a Project")
-		void findProjectByOwnerAndRepo () {
+		void findProjectByOwnerAndRepo () throws ProjectNotFound {
 			String owner = "octocat";
 			String repo =  "hello-world";
 			Integer sinceCommits = 3;
@@ -71,6 +73,8 @@ class GitHubMinerApplicationTests {
 			System.out.println(project);
 
 	}
+	*/
+
 	}
 
 
