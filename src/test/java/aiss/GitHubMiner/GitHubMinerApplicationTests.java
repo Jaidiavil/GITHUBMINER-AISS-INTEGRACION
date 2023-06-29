@@ -60,7 +60,7 @@ class GitHubMinerApplicationTests {
 			System.out.println(comments);
 
 		}
-		/*
+
 		@Test
 		@DisplayName("Get a Project")
 		void findProjectByOwnerAndRepo () throws ProjectNotFound {
@@ -73,7 +73,7 @@ class GitHubMinerApplicationTests {
 			System.out.println(project);
 
 	}
-	*/
+
 
 	}
 

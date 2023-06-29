@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class GitHubService {
@@ -76,40 +75,30 @@ public class GitHubService {
         Comment[] comments = commentSearch.getBody();
         return Arrays.asList(comments);
     }
-    public Optional<Project> findProjectByOwnerAndRepo(String owner, String repo,Integer sinceCommits,Integer sinceIssues,Integer maxPages) throws ProjectNotFound{
+    public Project findProjectByOwnerAndRepo(String owner, String repo,Integer sinceCommits,Integer sinceIssues,Integer maxPages) throws ProjectNotFound {
         Project project = null;
-        String uri = "https://api.github.com/repos/" + owner + "/"+ repo+ "?per_page=" + maxPages;
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization","Bearer " + token);
-        HttpEntity<Project> entity = new HttpEntity<Project>(null, headers);
-
-        ResponseEntity<Project> projectSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, Project.class);
-
-        if (projectSearch.getStatusCode().equals(HttpStatus.NOT_FOUND) ){
-            return Optional.empty();
-        }
-
-        project = projectSearch.getBody();
-        project.setCommit(findCommitsByOwnerAndRepo(owner,repo,sinceCommits,maxPages));
-        project.setIssues(findIssuesByOwnerAndRepo(owner,repo,sinceIssues,maxPages));
-
-        return Optional.of(project);
-    }
-    public Project getProjectById(String id, String repo, Integer sinceCommits , Integer sinceIssues,Integer maxPages){
-
-        String url = "http://localhost:8080/gitminer/projects" + id + "?per_page=" + maxPages;
+        String uri = "https://api.github.com/repos/" + owner + "/" + repo + "?per_page=" + maxPages;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Project> entity = new HttpEntity<Project>(null, headers);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<Project> response = restTemplate.exchange(url, HttpMethod.GET, entity, Project.class);
-        Project project = response.getBody();
+
+        ResponseEntity<Project> projectSearch;
+        try {
+            projectSearch = restTemplate.exchange(uri, HttpMethod.GET, entity, Project.class);
+
+        } catch (Exception e) {
+            throw new ProjectNotFound();
+        }
+
+        project = projectSearch.getBody();
+        project.setCommit(findCommitsByOwnerAndRepo(owner, repo, sinceCommits, maxPages));
+        project.setIssues(findIssuesByOwnerAndRepo(owner, repo, sinceIssues, maxPages));
 
         return project;
     }
+
     public ProjectGitMiner createProject(Project project){
         String uri = "http://localhost:8080/gitminer";
         ProjectGitMiner res = restTemplate.postForObject(uri, project, ProjectGitMiner.class);
