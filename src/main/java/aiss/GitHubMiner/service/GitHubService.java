@@ -24,7 +24,7 @@ public class GitHubService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization","Bearer "+token);
 
-        return headers;
+        return  headers;
     }
 
     public User findUser(String owner){

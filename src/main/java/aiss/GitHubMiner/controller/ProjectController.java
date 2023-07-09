@@ -25,7 +25,7 @@ public ProjectGitMiner createProject(@PathVariable String owner, @PathVariable S
                                      @RequestParam(defaultValue = "2") Integer maxPages) throws ProjectNotFound {
     Project project = service.findProjectByOwnerAndRepo(owner,repo,sinceCommits,sinceIssues,maxPages);
 
-    return service.createProject(project);
+    return  service.createProject(project);
 }
 
     // GET http://localhost:8082/api/projects/{owner}/{repo}

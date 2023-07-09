@@ -23,7 +23,7 @@ class GitHubMinerApplicationTests {
 		void findUser () {
 			String owner = "octocat";
 			User user = gitHubService.findUser(owner);
-			System.out.println(user);
+			System.out.println( user);
 		}
 		@Test
 		@DisplayName("Get commits")
